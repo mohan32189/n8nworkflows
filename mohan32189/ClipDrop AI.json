@@ -1,0 +1,266 @@
+{
+  "active": false,
+  "connections": {
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AddQuestion": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AddQuestion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2023-09-24T00:54:46.354Z",
+  "id": "gDZUHPp82b5TExW2",
+  "name": "ClipDrop AI",
+  "nodes": [
+    {
+      "parameters": {
+        "amount": 50,
+        "unit": "seconds"
+      },
+      "id": "fe047849-a74c-4aae-b5d7-f6755d1e704e",
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        -520,
+        280
+      ],
+      "webhookId": "1ecff99b-452c-4ef6-96c6-bb5665ea3154",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "url": "=https://pocketbase.mikrowsoft.com/api/collections/ClipDropUser/records/{{ $json.id.trim() }}",
+        "options": {}
+      },
+      "id": "98347b07-2a2c-4547-8de5-3838de258973",
+      "name": "HTTP Request1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -160,
+        280
+      ],
+      "alwaysOutputData": true,
+      "executeOnce": false,
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "amount": 20,
+        "unit": "seconds"
+      },
+      "id": "72d7f3f4-0b4a-4670-8532-2b0136de95dc",
+      "name": "Wait1",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        -40,
+        580
+      ],
+      "webhookId": "1bfe2fdc-9b96-4ff8-a8e5-8a16810e9479"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.Image1Data }}",
+              "operation": "isNotEmpty"
+            },
+            {
+              "value1": "={{ $json.Image2Data }}",
+              "operation": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "id": "191d5944-f347-4085-aefe-f61acf3dfb09",
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        40,
+        280
+      ],
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "119923ac-4fd0-459c-a2d0-2c411f14c50f",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        480,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://pocketbase.mikrowsoft.com/api/collections/ClipDropUser/records",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "Prompt",
+              "value": "={{ $json.query.text.trim() }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9c5d96db-00d7-4541-b6b1-09d4f10e653c",
+      "name": "AddQuestion",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -740,
+        280
+      ],
+      "executeOnce": false,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "DELETE",
+        "url": "=https://pocketbase.mikrowsoft.com/api/collections/ClipDropUser/records/{{ $('HTTP Request1').item.json.id }}",
+        "options": {}
+      },
+      "id": "e90cec68-0ce4-4858-bad6-b6b1ff207b95",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        500,
+        480
+      ],
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "amount": 5,
+        "unit": "seconds"
+      },
+      "id": "749cf9c0-a677-458a-acc8-13facaf86268",
+      "name": "Wait2",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        180,
+        540
+      ],
+      "webhookId": "6c9fb944-5313-403a-85a4-03cdd0626081"
+    },
+    {
+      "parameters": {
+        "path": "b77b7bfc-26ec-4f95-a91b-48fdf10c238d",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "682a44b5-90cb-432b-a599-700c5812af41",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        -940,
+        280
+      ],
+      "webhookId": "b77b7bfc-26ec-4f95-a91b-48fdf10c238d"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2023-10-23T18:10:15.000Z",
+  "versionId": "6bdd2aa9-e0d0-461e-b9d4-0e00971730f7"
+}
