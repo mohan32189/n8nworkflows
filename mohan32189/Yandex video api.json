@@ -1,0 +1,188 @@
+{
+  "active": false,
+  "connections": {
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "Set",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2023-09-11T18:37:09.142Z",
+  "id": "wUy8BfM6eBJ3yldp",
+  "name": "Yandex video api",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://yandex.com/video/search",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "={{ $json.query.text }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d242d5da-c9bd-4c19-ad74-8d8f25a5401c",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        520,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "video1",
+              "value": "={{ $json.extractedStrings[3] }}"
+            },
+            {
+              "name": "video2",
+              "value": "={{ $json.extractedStrings[3] }}"
+            },
+            {
+              "name": "video3",
+              "value": "={{ $json.extractedStrings[3] }}"
+            },
+            {
+              "name": "video4",
+              "value": "={{ $json.extractedStrings[3] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "474e3cca-5dd0-4923-82d2-db83088afa17",
+      "name": "Set",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        860,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconst htmlString = items[0].json.data;\n\n// Extract img src attributes\nfunction extractImgSrc(htmlString) {\n    const regexPattern = /<img[^>]*src=\"([^\"]*)\"/g;\n    const matches = [];\n    let match;\n\n    while ((match = regexPattern.exec(htmlString)) !== null) {\n        matches.push(match[1]);\n    }\n\n    return matches;\n}\n\n// Extract img src attributes from the input HTML string\nconst imgSrcArray = extractImgSrc(htmlString);\n\n// Output data\nreturn [{ json: { imgSrcArray } }];"
+      },
+      "id": "b91f4722-f5b2-47ac-878f-385d93d236e1",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1180,
+        640
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Input data\nconst inputString = items[0].json.data;\n\n// Extract URLs ending with .jpeg\nfunction extractUrlsEndingWithJPEG(inputString) {\n    const regexPattern = /\\/\\/[^\\s\"]+\\.jpeg/g;\n    const matches = inputString.match(regexPattern) || [];\n    return matches;\n}\n\n// Extract URLs ending with .jpeg from the input string\nconst imgSrcArray = extractUrlsEndingWithJPEG(inputString);\n\n// Output data\nreturn [{ json: { imgSrcArray } }];"
+      },
+      "id": "ef32fd8e-6439-41d5-8f05-3ed2ddecec21",
+      "name": "Code1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1400,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract strings between two specified strings\nfunction extractStringsBetween(inputString, startString, endString) {\n    const regexPattern = new RegExp(`${startString}(.*?)${endString}`, 'g');\n    const matches = inputString.match(regexPattern);\n    \n    if (!matches) return [];\n    \n    return matches.map(match => match.slice(startString.length, -endString.length));\n}\n\n// Input data\nconst inputString = items[0].json.data; // Access input data directly\n\nconst startString = '/video/preview/';\nconst endString = '?text=';\n\n// Extract array of strings between startString and endString\nconst extractedStrings = extractStringsBetween(inputString, startString, endString);\n\n// Output data\nreturn { extractedStrings };"
+      },
+      "id": "a169f65d-4edd-455e-89a7-854f3aaa7b4a",
+      "name": "Code2",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        680,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "2b16f8b8-1ab7-465d-9c1a-90bfc7cc8cc5",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "path": "73d768ea-eab0-4dbf-9ae7-b46051348f57",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "011e97a6-48d3-4aaa-b786-4b2125c6194c",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        340,
+        280
+      ],
+      "webhookId": "73d768ea-eab0-4dbf-9ae7-b46051348f57"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2023-09-12T00:34:09.000Z",
+  "versionId": "309ba39a-de9c-4c6b-9d4b-70a37912f0e7"
+}
