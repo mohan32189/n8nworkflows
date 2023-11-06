@@ -1,0 +1,83 @@
+{
+  "active": false,
+  "connections": {},
+  "createdAt": "2023-09-11T21:07:21.133Z",
+  "id": "7WLqJwMoFbaZNAsk",
+  "name": "ChatDeep AI",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "d99b86e7-41d8-4f1c-8f94-70d42c6b7718",
+        "options": {}
+      },
+      "id": "b8fb777a-8227-4edd-938d-6b6bb77c7e08",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        320,
+        220
+      ],
+      "webhookId": "d99b86e7-41d8-4f1c-8f94-70d42c6b7718",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "json",
+        "url": "https://chataigpt.org/",
+        "elements": {
+          "elements": [
+            {
+              "selector": ".wpaicg-chat-message"
+            }
+          ]
+        },
+        "browserOptions": {},
+        "addition": {
+          "addScriptTag": {
+            "script": [
+              {
+                "content": "\n    const chatboxTextarea = document.querySelector('.wpaicg-chat-shortcode-typing');\n\n  \n    if (chatboxTextarea) {\n    \n      chatboxTextarea.value = 'Make a C# code to count up to 9999';\n\n    } \n\n const button = document.querySelector('.wpaicg-chat-shortcode-send');\n\nif (button) {\n \n  button.click();\n} \n\n\n\n"
+              }
+            ]
+          },
+          "waitFor": "20000"
+        }
+      },
+      "id": "7d4d376f-9b0e-4195-b7c7-38b877a65157",
+      "name": "Browserless",
+      "type": "n8n-nodes-browserless.Browserless",
+      "typeVersion": 1,
+      "position": [
+        600,
+        260
+      ],
+      "credentials": {
+        "browserlessApi": {
+          "id": "5PLOgVV37wlyH5RS",
+          "name": "Browserless Credentials account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "60430fbb-402a-48c9-b3e3-599650cfc2a3",
+      "name": "Read PDF",
+      "type": "n8n-nodes-base.readPDF",
+      "typeVersion": 1,
+      "position": [
+        940,
+        140
+      ]
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2023-09-14T22:20:12.000Z",
+  "versionId": "d0f56064-9e4f-4a74-bde9-a84dc7df21ad"
+}
