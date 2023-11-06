@@ -1,0 +1,81 @@
+{
+  "active": false,
+  "connections": {
+    "When clicking \"Execute Workflow\"": {
+      "main": [
+        [
+          {
+            "node": "Browserless",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2023-10-31T00:17:37.512Z",
+  "id": "Xv0Z7cwbSRyTgdMF",
+  "name": "Fast SD",
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "screenshot",
+        "operation": "capture",
+        "url": "=https://google-sdxl.hf.space/",
+        "manipulate": {},
+        "imageOptions": {
+          "fullPage": true
+        },
+        "browserOptions": {},
+        "addition": {
+          "addScriptTag": {
+            "script": [
+              {
+                "url": "",
+                "content": "\n  setTimeout(function() {\n    const textarea = document.querySelector('input[data-testid=\"textbox\"]');\n    textarea.value = 'Spider Girl, ultra realistic, 8k';\n  }, 5000);\n\n \n  setTimeout(function() {\n    const generateButton = document.getElementById('gen-button');\n    generateButton.click();\n  }, 8000);\n",
+                "type": "application/javascript"
+              }
+            ]
+          },
+          "waitFor": "60000"
+        }
+      },
+      "id": "aea36572-ddce-4a9d-87ae-d91405b37259",
+      "name": "Browserless",
+      "type": "n8n-nodes-browserless.Browserless",
+      "typeVersion": 1,
+      "position": [
+        840,
+        380
+      ],
+      "executeOnce": true,
+      "alwaysOutputData": true,
+      "credentials": {
+        "browserlessApi": {
+          "id": "HvU1ZvSHYRjATAOH",
+          "name": "Browserless Credentials account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "a9d2eb01-8094-4ffb-8f70-97b50bb7a51c",
+      "name": "When clicking \"Execute Workflow\"",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        660,
+        380
+      ]
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2023-11-02T18:09:47.000Z",
+  "versionId": "8471a66e-36c8-4538-94e3-fcbf96b30d7d"
+}
