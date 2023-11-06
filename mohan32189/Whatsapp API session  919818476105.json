@@ -1,0 +1,309 @@
+{
+  "active": false,
+  "connections": {
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetParameters": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get QR Code": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF1": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "GetParameters",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "IF1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2023-09-11T18:41:34.335Z",
+  "id": "KaENWVENw5P0kU6E",
+  "name": "Whatsapp API session  919818476105",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "text",
+              "operation": "startsWith",
+              "value2": "image@msb"
+            }
+          ]
+        }
+      },
+      "id": "cc22c5e4-bba8-45b8-820e-1a4f22afeb16",
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1180,
+        860
+      ]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "SessionId",
+              "value": "919818476105"
+            },
+            {
+              "name": "Message",
+              "value": "anime girl"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a33bc4fd-3dda-412c-b1e8-794cb460e06f",
+      "name": "GetParameters",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        940,
+        800
+      ]
+    },
+    {
+      "parameters": {
+        "url": "http://192.168.1.160:30112/session/start/919818476105",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "id": "82a2324e-4779-4f65-be63-e2e589fbe503",
+      "name": "Start Session",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        860,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "url": "http://192.168.1.160:30112/session/terminate/919818476105",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "id": "437cdeaf-91ee-42b5-b178-7e837271fc86",
+      "name": "End Session1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1100,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "e78e8105-d2e0-4a99-8c45-65220c20f4a3",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1620,
+        800
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://api.qrserver.com/v1/create-qr-code/?size=500x500&data={{ $json.body.data.qr }}",
+        "options": {
+          "timeout": 5000
+        }
+      },
+      "id": "19ec39e4-e43b-49e8-89fb-f16aa461963d",
+      "name": "Get QR Code",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1360,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "ff5f8a00-794f-455c-ba0a-f3c6338883b3",
+      "name": "Respond to Webhook1",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1580,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.body.data.qr }}",
+              "operation": "isNotEmpty"
+            },
+            {
+              "value1": "={{ $json.body.dataType }}",
+              "value2": "qr"
+            }
+          ]
+        }
+      },
+      "id": "9c77c1ad-fb77-4773-94d2-a0fb4a337c86",
+      "name": "IF1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        740,
+        700
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "8cd7a9c6-a147-401f-add5-eafb458dd214",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "3701204f-d626-4219-b7fe-ec88ba4c752b",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        560,
+        700
+      ],
+      "webhookId": "8cd7a9c6-a147-401f-add5-eafb458dd214"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the input data from the items array\nconst inputData = items[0].json;\n\n// Extract the \"qr\" value from the input data\nconst qrData = inputData.body.data.qr;\n\n// Encode the QR data as a URL component\nconst encodedQRData = encodeURIComponent(qrData);\n\n// Prepare the output data\nconst outputData = {\n  encodedQRData: encodedQRData\n};\n\n// Return the output data\nreturn [outputData];"
+      },
+      "id": "a010034b-54b2-426c-ab95-282b1a942423",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1140,
+        640
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://api.qrserver.com/v1/create-qr-code/?size=500x500&data={{ $json.encodedQRData }}",
+        "options": {
+          "timeout": 5000
+        }
+      },
+      "id": "12ff4643-e34d-4f02-943d-cf0990b8b0dc",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1380,
+        640
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "OK",
+        "options": {}
+      },
+      "id": "de4f6226-5e5d-44a0-b1e5-5b4a09faf4f6",
+      "name": "Respond to Webhook2",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1640,
+        640
+      ]
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2023-09-11T18:43:02.000Z",
+  "versionId": "7b0d0265-0c16-4dad-acc6-eebedad3d48c"
+}
