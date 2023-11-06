@@ -1,0 +1,776 @@
+{
+  "active": true,
+  "connections": {
+    "IF1": {
+      "main": [
+        [],
+        [
+          {
+            "node": "GetParameters",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "GetImageFromYandex",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "IF2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetParameters": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetImageFromYandex": {
+      "main": [
+        [
+          {
+            "node": "SendImage1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SendImage4",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SendImage2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SendImage3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "SendImage",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SendImage5",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SendImage6",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SendImage7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2023-09-11T18:40:59.362Z",
+  "id": "94i3zMauVGDx5st0",
+  "name": "Whatsapp API",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "94b8e348-d001-4668-8aac-2e2d61af41b7",
+        "options": {}
+      },
+      "id": "98d4994d-08fc-4c2d-82bf-1ecaf668ad33",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        580
+      ],
+      "webhookId": "94b8e348-d001-4668-8aac-2e2d61af41b7"
+    },
+    {
+      "parameters": {
+        "url": "https://whtsapi.mikrowsoft.com/session/start/919818476105",
+        "options": {}
+      },
+      "id": "b4060d91-db9e-49f2-b62a-dd3eddd4082e",
+      "name": "Start Session",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        200,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://whtsapi.mikrowsoft.com/session/terminate/919818476105",
+        "options": {}
+      },
+      "id": "357acf38-9191-4e26-8d59-5d6f5b7b3e7c",
+      "name": "End Session1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        460,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.body.data.qr }}",
+              "operation": "isNotEmpty"
+            },
+            {
+              "value1": "={{ $json.body.dataType }}",
+              "value2": "qr"
+            }
+          ]
+        }
+      },
+      "id": "fbb1007a-2aba-4107-b3d4-a5df701080d4",
+      "name": "IF1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        220,
+        680
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "screenshot",
+        "operation": "capture",
+        "url": "https://qrcode.tec-it.com/en",
+        "manipulate": {},
+        "imageOptions": {
+          "clip": {
+            "clip": {
+              "width": 800,
+              "height": 800,
+              "x": 100,
+              "y": 100
+            }
+          }
+        },
+        "browserOptions": {},
+        "addition": {
+          "addScriptTag": {
+            "script": [
+              {
+                "url": "",
+                "content": "\nvar textarea = document.getElementById(\"Data_Data\");\n\nvar newText = \"Hello, this is the new text!\";\n\n\ntextarea.value = newText;\n\n\n\nvar barcodeDiv = document.querySelector(\".barcodeRefresh\");\n\nif (barcodeDiv) {\n  // Find the anchor element within the div\n  var anchorElement = barcodeDiv.querySelector(\"a\");\n\n  if (anchorElement) {\n    // Simulate a click on the anchor element\n    anchorElement.click();\n  } else {\n    console.log(\"Anchor element not found within the div.\");\n  }\n} else {\n  console.log(\"Div element with class 'barcodeRefresh' not found.\");\n}",
+                "type": "application/javascript"
+              }
+            ]
+          },
+          "waitFor": "3000"
+        }
+      },
+      "id": "a9f0eb7d-b6f0-41ab-872d-0797f752d783",
+      "name": "Browserless",
+      "type": "n8n-nodes-browserless.Browserless",
+      "typeVersion": 1,
+      "position": [
+        760,
+        380
+      ],
+      "credentials": {
+        "browserlessApi": {
+          "id": "HvU1ZvSHYRjATAOH",
+          "name": "Browserless Credentials account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the input data from the items array\nconst inputData = items[0].json;\n\n// Extract the \"qr\" value from the input data\nconst qrData = inputData.body.data.qr;\n\n// Encode the QR data as a URL component\nconst encodedQRData = encodeURIComponent(qrData);\n\n// Prepare the output data\nconst outputData = {\n  encodedQRData: encodedQRData\n};\n\n// Return the output data\nreturn [outputData];"
+      },
+      "id": "c5252509-633b-42db-9775-379150500f90",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        640,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://api.qrserver.com/v1/create-qr-code/?size=500x500&data={{ $json.encodedQRData }}",
+        "options": {
+          "timeout": 5000
+        }
+      },
+      "id": "d404e40a-7556-41a2-8587-2e6be989a020",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        880,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.Message }}",
+              "operation": "startsWith",
+              "value2": "photo@msb"
+            }
+          ]
+        }
+      },
+      "id": "c18bf226-7745-4ba7-a286-39236ff9b3a7",
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        460,
+        940
+      ]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "SessionId",
+              "value": "919871204708"
+            },
+            {
+              "name": "Message",
+              "value": "={{ $json.body.data.message._data.body.toLowerCase() }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9c7f0869-7355-4f12-b3f7-2e4ec1f5f34a",
+      "name": "GetParameters",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        200,
+        920
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "url": "http://192.168.1.160:30112/session/start/919818476105",
+        "options": {}
+      },
+      "id": "d1cddccf-6645-4326-a3ce-84278a882d73",
+      "name": "Start Session1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        180,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "url": "http://192.168.1.160:30112/session/terminate/919818476105",
+        "options": {}
+      },
+      "id": "673cb2b8-37b3-47be-9b78-88e8f8054a5c",
+      "name": "End Session",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        460,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "url": "http://192.168.1.160:5678/webhook-test/2962f4af-b637-4696-bfe5-3c13956b5814",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "tell ma a joke in hindi"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "abb7257e-6663-4a6b-807f-4c725c3eb79c",
+      "name": "CallChatGPTAPI",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1400,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=http://localhost:5678/webhook/f3c5beda-d033-4d04-83be-482ccd4b87a8?text= {{ $json.Message.replace(\"photo@msb\",\"\").trim() }}",
+        "options": {}
+      },
+      "id": "47d605d0-ad31-487e-bf4f-619302e312d8",
+      "name": "GetImageFromYandex",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        900,
+        900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://whtsapi.mikrowsoft.com/client/sendMessage/{{ $('GetParameters').item.json.SessionId }}",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "={{ $('Webhook').item.json.body.data.message.from }}"
+            },
+            {
+              "name": "contentType",
+              "value": "MessageMediaFromURL"
+            },
+            {
+              "name": "content",
+              "value": "=https:{{ $json.image1 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "aa4e028d-1d4f-41e9-9576-afccb389a598",
+      "name": "SendImage1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1120,
+        900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://whtsapi.mikrowsoft.com/client/sendMessage/{{ $('GetParameters').item.json.SessionId }}",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "={{ $('Webhook').item.json.body.data.message.from }}"
+            },
+            {
+              "name": "contentType",
+              "value": "MessageMediaFromURL"
+            },
+            {
+              "name": "content",
+              "value": "=https:{{ $json.image2 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "dcdf3356-3db0-4054-9d63-46267774db3b",
+      "name": "SendImage2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1120,
+        1060
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://whtsapi.mikrowsoft.com/client/sendMessage/{{ $('GetParameters').item.json.SessionId }}",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "={{ $('Webhook').item.json.body.data.message.from }}"
+            },
+            {
+              "name": "contentType",
+              "value": "MessageMediaFromURL"
+            },
+            {
+              "name": "content",
+              "value": "=https:{{ $json.image3 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3a5125f2-68a6-4efe-bef7-f3bea771c219",
+      "name": "SendImage3",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1120,
+        1220
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://whtsapi.mikrowsoft.com/client/sendMessage/{{ $('GetParameters').item.json.SessionId }}",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "={{ $('Webhook').item.json.body.data.message.from }}"
+            },
+            {
+              "name": "contentType",
+              "value": "MessageMediaFromURL"
+            },
+            {
+              "name": "content",
+              "value": "=https:{{ $json.image4 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ef235810-ed4d-4d49-a59c-cb8212e200c7",
+      "name": "SendImage4",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1120,
+        1360
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $('GetParameters').item.json.Message }}",
+              "operation": "startsWith",
+              "value2": "art@msb"
+            }
+          ]
+        }
+      },
+      "id": "61a5054e-0061-414d-8809-131d11f580af",
+      "name": "IF2",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        520,
+        1140
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=http://localhost:5678/webhook/4b91f894-f11b-4ff4-893e-bac5459c93d6?text= {{ $json.Message.replace(\"art@msb\",\"\").trim() }}",
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "af4525db-fedf-420a-9c5f-2a55457cdf0e",
+      "name": "HTTP Request1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        860,
+        1160
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://whtsapi.mikrowsoft.com/client/sendMessage/{{ $('GetParameters').item.json.SessionId }}",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "={{ $('Webhook').item.json.body.data.message.from }}"
+            },
+            {
+              "name": "contentType",
+              "value": "MessageMediaFromURL"
+            },
+            {
+              "name": "content",
+              "value": "={{ $json.Image1 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "48da3f0b-1fd8-4497-83ee-a8ed925e4092",
+      "name": "SendImage",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1380,
+        900
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://whtsapi.mikrowsoft.com/client/sendMessage/{{ $('GetParameters').item.json.SessionId }}",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "={{ $('Webhook').item.json.body.data.message.from }}"
+            },
+            {
+              "name": "contentType",
+              "value": "MessageMediaFromURL"
+            },
+            {
+              "name": "content",
+              "value": "={{ $json.Image2 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a00fea97-ea4f-469e-90f6-4ce9d40cda7c",
+      "name": "SendImage5",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1380,
+        1040
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://whtsapi.mikrowsoft.com/client/sendMessage/{{ $('GetParameters').item.json.SessionId }}",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "={{ $('Webhook').item.json.body.data.message.from }}"
+            },
+            {
+              "name": "contentType",
+              "value": "MessageMediaFromURL"
+            },
+            {
+              "name": "content",
+              "value": "={{ $json.Image3 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "cfb2bdaf-851a-4c29-a8d3-d66826d598b9",
+      "name": "SendImage6",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1380,
+        1180
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://whtsapi.mikrowsoft.com/client/sendMessage/{{ $('GetParameters').item.json.SessionId }}",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "={{ $('Webhook').item.json.body.data.message.from }}"
+            },
+            {
+              "name": "contentType",
+              "value": "MessageMediaFromURL"
+            },
+            {
+              "name": "content",
+              "value": "={{ $json.Image4 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "de51409a-ad2e-4caf-beb6-9a2a328a1ea2",
+      "name": "SendImage7",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1380,
+        1320
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://whtsapi.mikrowsoft.com/client/sendMessage/{{ $('GetParameters').item.json.SessionId }}",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "={{ $('Webhook').item.json.body.data.message.from }}"
+            },
+            {
+              "name": "contentType",
+              "value": "MessageMediaFromURL"
+            },
+            {
+              "name": "content",
+              "value": "={{ $json.Image5 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6b0d8a60-001d-4407-81ac-24df5bccac93",
+      "name": "SendImage8",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1380,
+        1460
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:5678/webhook-test/6b30b21f-49bb-48e1-8e8d-642b786c8a49",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "data",
+              "value": "={{ $json.body }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "db9c2192-c9e5-4af7-94bb-a022716553b9",
+      "name": "HTTP Request2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -200,
+        580
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "ca397be5-4393-43b4-9fe3-1a0746ee51a5",
+      "name": "When clicking \"Execute Workflow\"",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -380,
+        800
+      ]
+    },
+    {
+      "parameters": {
+        "command": "echo {{ $json.body }}"
+      },
+      "id": "874d3c1e-b94b-47d8-a480-76a26d343774",
+      "name": "Execute Command",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        -380,
+        360
+      ],
+      "alwaysOutputData": true
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2023-10-30T23:25:58.000Z",
+  "versionId": "01002f94-7a51-411f-b722-40618365aa4b"
+}
