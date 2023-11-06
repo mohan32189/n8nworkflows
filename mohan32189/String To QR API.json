@@ -1,0 +1,110 @@
+{
+  "active": false,
+  "connections": {
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2023-09-11T18:39:18.194Z",
+  "id": "fEXnuPEXsQo9RoO6",
+  "name": "String To QR API",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "=https://api.qrserver.com/v1/create-qr-code/?size=500x500&data= {{ $json.encodedQRData }}",
+        "options": {
+          "timeout": 5000
+        }
+      },
+      "id": "d11d8aa9-86b1-44b9-9566-d28af1836d83",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        840,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "6d662927-132c-423b-aab0-b14730c2ed03",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "path": "645f476f-46dc-43b6-80a2-93acf3296fb4",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "2d5b4c96-bdf8-4a79-8bf6-8ced77e6b10b",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        480,
+        280
+      ],
+      "webhookId": "645f476f-46dc-43b6-80a2-93acf3296fb4"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the input data from the items array\nconst inputData = items[0].json;\n\n// Extract the \"qr\" value from the input data\nconst qrData = inputData.query.text;\n\n// Encode the QR data as a URL component\nconst encodedQRData = encodeURIComponent(qrData);\n\n// Prepare the output data\nconst outputData = {\n  encodedQRData: encodedQRData\n};\n\n// Return the output data\nreturn [outputData];"
+      },
+      "id": "bf9effc7-bb48-497f-8c3e-d56da165669b",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        640,
+        280
+      ]
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2023-09-11T18:40:24.000Z",
+  "versionId": "b2747da4-7fbe-45f1-bdd0-557eef569039"
+}
