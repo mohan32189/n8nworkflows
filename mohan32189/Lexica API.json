@@ -1,0 +1,148 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Browserless",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Browserless": {
+      "main": [
+        [
+          {
+            "node": "Set",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2023-09-11T20:42:40.557Z",
+  "id": "bfbLAYdLGESko3PM",
+  "name": "Lexica API",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "4b91f894-f11b-4ff4-893e-bac5459c93d6",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "9a85fdee-dc18-42c6-95f1-0106d1f1c3c1",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        340,
+        240
+      ],
+      "webhookId": "4b91f894-f11b-4ff4-893e-bac5459c93d6"
+    },
+    {
+      "parameters": {
+        "resource": "json",
+        "url": "=https://lexica.art/?q={{ $json.query.text }}",
+        "elements": {
+          "elements": [
+            {
+              "selector": "img",
+              "timeout": 1000
+            }
+          ]
+        },
+        "flattenedOutput": false,
+        "browserOptions": {},
+        "addition": {
+          "waitFor": "5000"
+        }
+      },
+      "id": "880a5fe9-3027-4971-a6e1-54483769add6",
+      "name": "Browserless",
+      "type": "n8n-nodes-browserless.Browserless",
+      "typeVersion": 1,
+      "position": [
+        560,
+        240
+      ],
+      "credentials": {
+        "browserlessApi": {
+          "id": "r4J6v0mNz6ON7tWi",
+          "name": "Browserless Credentials account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "Image1",
+              "value": "={{ $json.data[0].results[0].attributes[2].value }}"
+            },
+            {
+              "name": "Image2",
+              "value": "={{ $json.data[0].results[1].attributes[2].value }}"
+            },
+            {
+              "name": "Image3",
+              "value": "={{ $json.data[0].results[2].attributes[2].value }}"
+            },
+            {
+              "name": "Image4",
+              "value": "={{ $json.data[0].results[4].attributes[2].value }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "46aecc2f-00e8-4b3c-bed9-045b2e74d714",
+      "name": "Set",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        780,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "05cf80b7-92c7-44f5-a660-d95589e1c16c",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        240
+      ]
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2023-10-23T18:10:22.000Z",
+  "versionId": "d4d6b742-7e74-4a40-b90f-0a3e12566973"
+}
