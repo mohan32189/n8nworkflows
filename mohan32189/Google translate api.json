@@ -1,0 +1,206 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Browserless",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Browserless": {
+      "main": [
+        [
+          {
+            "node": "Set",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2023-09-11T18:37:39.072Z",
+  "id": "EmXzRROklOuq51TL",
+  "name": "Google translate api",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://translate.google.com/",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "={{ $json.query.text }}"
+            },
+            {
+              "name": "sl",
+              "value": "{{ $json.query.source}}"
+            },
+            {
+              "name": "tl",
+              "value": "{{ $json.query.target}}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 5000
+        }
+      },
+      "id": "6d2e36e7-e67a-47f3-91a6-447f65f03d73",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1540,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconst htmlString = items[0].json.data;\n\n// Extract img src attributes\nfunction extractImgSrc(htmlString) {\n    const regexPattern = /<img[^>]*src=\"([^\"]*)\"/g;\n    const matches = [];\n    let match;\n\n    while ((match = regexPattern.exec(htmlString)) !== null) {\n        matches.push(match[1]);\n    }\n\n    return matches;\n}\n\n// Extract img src attributes from the input HTML string\nconst imgSrcArray = extractImgSrc(htmlString);\n\n// Output data\nreturn [{ json: { imgSrcArray } }];"
+      },
+      "id": "c5b1f2d2-e5a9-4a76-8dd4-6b50e5b1ade3",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1340,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Input data\nconst htmlString = items[0].json.data;\n\n\n// Extract innerText of <div> element with class \"jCAhz ChMk0b\"\nfunction extractDivInnerText(htmlString) {\n    const divStart = htmlString.indexOf('<div class=\"jCAhz ChMk0b\">');\n    if (divStart === -1) {\n        return null;\n    }\n\n    const start = divStart + '<div class=\"jCAhz ChMk0b\">'.length;\n    const end = htmlString.indexOf('</div>', start);\n    if (end === -1) {\n        return null;\n    }\n\n    const innerText = htmlString.slice(start, end);\n    return innerText || null;\n}\n\n// Extract innerText of <div> element with class \"jCAhz ChMk0b\" from the input HTML string\nconst innerText = extractDivInnerText(htmlString);\n\n// Output data\nreturn { json: { innerText } };"
+      },
+      "id": "d1bb8819-9479-42f8-9bb6-63b1870553d3",
+      "name": "Code1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        840,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract strings between two specified strings\nfunction extractStringsBetween(inputString, startString, endString) {\n    const regexPattern = new RegExp(`${startString}(.*?)${endString}`, 'g');\n    const matches = inputString.match(regexPattern);\n    \n    if (!matches) return [];\n    \n    return matches.map(match => match.slice(startString.length, -endString.length));\n}\n\n// Input data\nconst inputString = items[0].json.data; // Access input data directly\n\nconst startString = '//';\nconst endString = '.jpg';\n\n// Extract array of strings between startString and endString\nconst extractedStrings = extractStringsBetween(inputString, startString, endString);\n\n// Output data\nreturn { extractedStrings };"
+      },
+      "id": "849c482e-8721-43c8-b26b-a76b61e1510e",
+      "name": "Code2",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        680
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "d0a2de97-7b7b-425a-827f-eeed0df7603d",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "path": "d14aa223-22a5-4e58-9caa-89d9fbad7b45",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "e5be9fcc-ae85-482f-9992-414b9ecfd94a",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        500,
+        300
+      ],
+      "webhookId": "d14aa223-22a5-4e58-9caa-89d9fbad7b45"
+    },
+    {
+      "parameters": {
+        "resource": "json",
+        "url": "=https://translate.google.com/?sl={{ $json.query.source }}&tl={{ $json.query.target }}&text={{ $json.query.text }}",
+        "elements": {
+          "elements": [
+            {
+              "selector": ".jCAhz.ChMk0b"
+            }
+          ]
+        },
+        "browserOptions": {},
+        "addition": {
+          "waitFor": "1000"
+        }
+      },
+      "id": "d44a2218-a7fe-4b96-acb5-a34b708d840f",
+      "name": "Browserless",
+      "type": "n8n-nodes-browserless.Browserless",
+      "typeVersion": 1,
+      "position": [
+        680,
+        300
+      ],
+      "credentials": {
+        "browserlessApi": {
+          "id": "5PLOgVV37wlyH5RS",
+          "name": "Browserless Credentials account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "Response",
+              "value": "={{ $json.text }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c3200680-0cb7-4e25-aaed-4339a669f559",
+      "name": "Set",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        860,
+        300
+      ]
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2023-09-11T19:00:18.000Z",
+  "versionId": "48cf65a0-0e3a-42d6-8a4c-35c11281a630"
+}
