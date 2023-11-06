@@ -1,0 +1,275 @@
+{
+  "active": false,
+  "connections": {
+    "When clicking \"Execute Workflow\"": {
+      "main": [
+        [
+          {
+            "node": "GetToken",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Browserless": {
+      "main": [
+        [
+          {
+            "node": "Read PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetToken": {
+      "main": [
+        [
+          {
+            "node": "Scan Hash",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetVirusData": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Scan File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2023-09-11T18:38:51.806Z",
+  "id": "VuZxuFFgURd5GrBb",
+  "name": "Virus scan api",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "e71ab152-a952-41da-a0cb-abb580bf6880",
+      "name": "When clicking \"Execute Workflow\"",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -280,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "pdf",
+        "url": "https://www.virustotal.com/gui/search/125acbe424fa53e85dd36f9180bd4a1c",
+        "imageOptions": {
+          "clip": {
+            "clip": {
+              "width": 400,
+              "height": 600
+            }
+          }
+        },
+        "browserOptions": {},
+        "addition": {}
+      },
+      "id": "d9fff58b-1405-4db5-83c8-fd9df3c0d89e",
+      "name": "Browserless",
+      "type": "n8n-nodes-browserless.Browserless",
+      "typeVersion": 1,
+      "position": [
+        320,
+        640
+      ],
+      "credentials": {
+        "browserlessApi": {
+          "id": "5PLOgVV37wlyH5RS",
+          "name": "Browserless Credentials account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "29b66b23-2d38-4669-82d7-609165f22def",
+      "name": "Read PDF",
+      "type": "n8n-nodes-base.readPDF",
+      "typeVersion": 1,
+      "position": [
+        540,
+        640
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.labs.sophos.com/oauth2/token",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Basic NXZhbW9hMHFidnQ0aTYzNWdtbGRzYmVkYnQ6MTYwb2E0MWdsZzI4Y2xmMWdic2Fkamk0Nzl0ZmJsZWdiN2U1OWRucDRpYXJ2bXAzcmQ4OA=="
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/x-www-form-urlencoded"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "grant_type",
+              "value": "client_credentials"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "432e49f5-c27e-486a-b2e1-be7332feecbe",
+      "name": "GetToken",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -80,
+        400
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "url": "https://secure.eicar.org/eicar_com.zip",
+        "options": {}
+      },
+      "id": "68acb8d3-55b5-4f09-b329-ad87b097378a",
+      "name": "GetVirusData",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        280,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "file = $('GetVirusData').all()[0].binary.data;\n\nreturn {file: file}"
+      },
+      "id": "e85f3e2c-eb10-4a55-8172-22ce715139f0",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        440,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://de.api.labs.sophos.com/lookup/files/v1/f9e4afbe3d2273b983ea66d7b3e9872b9ef4faed237f0c1503354f74c571404b",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ $json.access_token }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "31c204a4-2872-41f3-86b6-a423fe310f0e",
+      "name": "Scan Hash",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        40,
+        600
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://de.api.labs.sophos.com/analysis/file/static-dynamic/v1/",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ $('GetToken').item.json.access_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "filename",
+              "value": "={{ $json.file.fileName }}"
+            },
+            {
+              "name": "=name",
+              "value": "={{ $json.file }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b552efb5-edb8-4020-b7bc-75578f60ef0d",
+      "name": "Scan File",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        640,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://de.api.labs.sophos.com/lookup/urls/v1/https://www.waredot.com",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ $json.access_token }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3108aec4-a76f-4d8f-bc70-c7a36f9a29fd",
+      "name": "Scan url",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        100,
+        460
+      ]
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2023-09-11T19:01:01.000Z",
+  "versionId": "ca3b4d47-f36b-48d6-8831-e56b3e73a362"
+}
