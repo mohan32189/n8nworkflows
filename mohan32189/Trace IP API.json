@@ -1,0 +1,176 @@
+{
+  "active": false,
+  "connections": {
+    "Browserless": {
+      "main": [
+        [
+          {
+            "node": "Set",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Browserless",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2023-09-11T18:38:03.660Z",
+  "id": "LUkAqvF1yYMpRcHF",
+  "name": "Trace IP API",
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "json",
+        "url": "=https://ip-api.com/#{{ $json.query.ip }}",
+        "elements": {
+          "elements": [
+            {
+              "selector": "pre",
+              "timeout": 1000
+            }
+          ]
+        },
+        "browserOptions": {},
+        "addition": {
+          "waitFor": "3000"
+        }
+      },
+      "id": "ee3c1b90-bd65-48cd-a3eb-883252ea0cc4",
+      "name": "Browserless",
+      "type": "n8n-nodes-browserless.Browserless",
+      "typeVersion": 1,
+      "position": [
+        480,
+        220
+      ],
+      "credentials": {
+        "browserlessApi": {
+          "id": "r4J6v0mNz6ON7tWi",
+          "name": "Browserless Credentials account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "2493aa2d-5878-48da-b44f-defea50417a0",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "db193fa2-a14b-458a-a3d5-0900da5ebfc4",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        320,
+        220
+      ],
+      "webhookId": "2493aa2d-5878-48da-b44f-defea50417a0"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.IpInfo }}",
+        "options": {}
+      },
+      "id": "d32be239-aab3-4dcf-903e-dd7676e725fc",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        880,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "IpInfo",
+              "value": "={{ $json.text }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "798dd8ea-54e2-45d4-9e19-3b946c211ca6",
+      "name": "Set",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        680,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "json",
+        "url": "https://apiip.net/",
+        "elements": {
+          "elements": [
+            {
+              "selector": ".banner-ip-informations-wrapper",
+              "timeout": 3000
+            }
+          ]
+        },
+        "browserOptions": {},
+        "addition": {
+          "addScriptTag": {
+            "script": [
+              {
+                "content": "setTimeout(()=>{\n// Get the input element and button element by their classes\nconst inputElement = document.querySelector('.banner-ip-input-wrapper .form-control');\nconst lookupButton = document.querySelector('.banner-ip-input-wrapper .btn');\n\n// Value to insert into the input\nconst inputValue = '122.160.75.140';\n\n// Set the value of the input\ninputElement.value = inputValue;\n\n// Trigger a click event on the lookup button\nlookupButton.click();\n\n},1000);"
+              }
+            ]
+          },
+          "waitFor": "5000"
+        }
+      },
+      "id": "6c0b1e61-204b-437f-af50-8bcb3c2f8e89",
+      "name": "Browserless1",
+      "type": "n8n-nodes-browserless.Browserless",
+      "typeVersion": 1,
+      "position": [
+        660,
+        520
+      ],
+      "credentials": {
+        "browserlessApi": {
+          "id": "r4J6v0mNz6ON7tWi",
+          "name": "Browserless Credentials account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2023-09-26T16:55:42.000Z",
+  "versionId": "c6ce37ff-1375-41c6-a32b-61d6cccc73ed"
+}
