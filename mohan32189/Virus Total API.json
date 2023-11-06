@@ -1,0 +1,186 @@
+{
+  "active": true,
+  "connections": {
+    "Browserless": {
+      "main": [
+        [
+          {
+            "node": "Read PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "Browserless",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read PDF": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2023-10-26T22:55:10.176Z",
+  "id": "pjjJjXIDEY8bHOFQ",
+  "name": "Virus Total API",
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "pdf",
+        "url": "=https://www.virustotal.com/gui/search/ {{ $json.query.hash }}",
+        "imageOptions": {
+          "clip": {
+            "clip": {
+              "width": 400,
+              "height": "=200"
+            }
+          }
+        },
+        "browserOptions": {},
+        "addition": {
+          "waitFor": "3000"
+        }
+      },
+      "id": "27717bd5-1306-42c8-a919-c76852443433",
+      "name": "Browserless",
+      "type": "n8n-nodes-browserless.Browserless",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        360
+      ],
+      "credentials": {
+        "browserlessApi": {
+          "id": "HvU1ZvSHYRjATAOH",
+          "name": "Browserless Credentials account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "bf57e498-e04a-456e-b713-3b5df7f7c6c8",
+      "name": "Read PDF",
+      "type": "n8n-nodes-base.readPDF",
+      "typeVersion": 1,
+      "position": [
+        1380,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "path": "7562e624-985d-4f3e-b2a0-3458ca79c210",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "5d08fa4a-f5f8-49fd-b9ca-a4c4f53eed06",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        820,
+        380
+      ],
+      "webhookId": "7562e624-985d-4f3e-b2a0-3458ca79c210"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.query.hash }}",
+              "operation": "isNotEmpty"
+            }
+          ],
+          "number": [
+            {
+              "value1": "={{ $json.query.hash.length }}",
+              "operation": "equal",
+              "value2": 64
+            }
+          ]
+        }
+      },
+      "id": "5edab4a1-6d75-4bb1-babc-a92fdc80c9d5",
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const inputString = items[0].json.text;\nconst startString = \"Popular\";\nconst endString = \"Threat\";\n\n\n// Find the positions of the start and end strings in the input string\nconst startIndex = inputString.indexOf(startString);\nconst endIndex = inputString.indexOf(endString);\n\n// Check if both strings exist in the input string and extract the content between them\nif (startIndex !== -1 && endIndex !== -1) {\n    const trimmedString = inputString.substring(startIndex + startString.length, endIndex);\n    return { Result: trimmedString };\n}\n\nreturn { Result: \"Not Found\" };"
+      },
+      "id": "32c5848c-78d8-4865-90d8-14801ec35131",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1580,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "75e18f8b-60f4-49c6-9fca-fb68c60742c7",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1740,
+        360
+      ]
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2023-10-27T19:02:23.000Z",
+  "versionId": "b4a59c15-0003-4c43-8522-41c5a3a068da"
+}
