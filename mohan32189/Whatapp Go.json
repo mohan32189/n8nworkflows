@@ -1,0 +1,1101 @@
+{
+  "active": true,
+  "connections": {
+    "IF1": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "GetParameters",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "GetImageFromYandex",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetParameters": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetImageFromYandex": {
+      "main": [
+        [
+          {
+            "node": "SendImage1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SendImage4",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SendImage2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SendImage3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "SendImage",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SendImage5",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SendImage6",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "SendImage7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "IF1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "IF2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "IF4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "IF5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF4": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF5": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request4",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request3": {
+      "main": [
+        [
+          {
+            "node": "SendImage8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "SendImage9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request4": {
+      "main": [
+        [
+          {
+            "node": "SendImage10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SendImage10": {
+      "main": [
+        [
+          {
+            "node": "SendImage11",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2023-09-14T20:17:18.975Z",
+  "id": "wJ5R6XXT8jahQtyh",
+  "name": "Whatapp Go",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://whtsapi.mikrowsoft.com/session/start/919818476105",
+        "options": {}
+      },
+      "id": "133417f2-6182-4ced-964b-4605616c1bb9",
+      "name": "Start Session",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1580,
+        580
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://whtsapi.mikrowsoft.com/session/terminate/919818476105",
+        "options": {}
+      },
+      "id": "071d1152-1b19-4f6f-bc81-65cc3428d5f8",
+      "name": "End Session1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1840,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.body.data.data.qr }}",
+              "operation": "isNotEmpty"
+            },
+            {
+              "value1": "={{ $json.body.data.dataType }}",
+              "value2": "qr"
+            }
+          ]
+        }
+      },
+      "id": "b80bb7e3-d488-4973-b2b8-993fdea96456",
+      "name": "IF1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1580,
+        980
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "screenshot",
+        "operation": "capture",
+        "url": "https://qrcode.tec-it.com/en",
+        "manipulate": {},
+        "imageOptions": {
+          "clip": {
+            "clip": {
+              "width": 800,
+              "height": 800,
+              "x": 100,
+              "y": 100
+            }
+          }
+        },
+        "browserOptions": {},
+        "addition": {
+          "addScriptTag": {
+            "script": [
+              {
+                "url": "",
+                "content": "\nvar textarea = document.getElementById(\"Data_Data\");\n\nvar newText = \"Hello, this is the new text!\";\n\n\ntextarea.value = newText;\n\n\n\nvar barcodeDiv = document.querySelector(\".barcodeRefresh\");\n\nif (barcodeDiv) {\n  // Find the anchor element within the div\n  var anchorElement = barcodeDiv.querySelector(\"a\");\n\n  if (anchorElement) {\n    // Simulate a click on the anchor element\n    anchorElement.click();\n  } else {\n    console.log(\"Anchor element not found within the div.\");\n  }\n} else {\n  console.log(\"Div element with class 'barcodeRefresh' not found.\");\n}",
+                "type": "application/javascript"
+              }
+            ]
+          },
+          "waitFor": "3000"
+        }
+      },
+      "id": "f44d38c3-d4d7-48a4-abf0-ef9574d5f3d5",
+      "name": "Browserless",
+      "type": "n8n-nodes-browserless.Browserless",
+      "typeVersion": 1,
+      "position": [
+        2140,
+        640
+      ],
+      "credentials": {
+        "browserlessApi": {
+          "id": "r4J6v0mNz6ON7tWi",
+          "name": "Browserless Credentials account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the input data from the items array\nconst inputData = items[0].json;\n\n// Extract the \"qr\" value from the input data\nconst qrData = inputData.body.data.data.qr;\n\n// Encode the QR data as a URL component\nconst encodedQRData = encodeURIComponent(qrData);\n\n// Prepare the output data\nconst outputData = {\n  encodedQRData: encodedQRData\n};\n\n// Return the output data\nreturn [outputData];"
+      },
+      "id": "d8926122-4ef0-43b1-9aa4-7ba0703fd30a",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        2020,
+        920
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://api.qrserver.com/v1/create-qr-code/?size=500x500&data={{ $json.encodedQRData }}",
+        "options": {
+          "timeout": 5000
+        }
+      },
+      "id": "c8dc2856-111b-4365-90c0-915b551f8060",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        2260,
+        920
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.Message }}",
+              "operation": "startsWith",
+              "value2": "photo@msb"
+            }
+          ]
+        }
+      },
+      "id": "a28e6c48-be53-4282-aaec-bf570661be28",
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        2020,
+        1260
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "SessionId",
+              "value": "={{ $json.body.data.sessionId }}"
+            },
+            {
+              "name": "Message",
+              "value": "={{ $json.body.data.data.message._data.body.toLowerCase() }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6d35b2b3-f262-45c1-ac99-d93471d251ce",
+      "name": "GetParameters",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        1420,
+        1260
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "url": "http://192.168.1.160:30112/session/start/919818476105",
+        "options": {}
+      },
+      "id": "a8a22adb-01c4-40a6-a4a6-451b99a81503",
+      "name": "Start Session1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1560,
+        760
+      ]
+    },
+    {
+      "parameters": {
+        "url": "http://192.168.1.160:30112/session/terminate/919818476105",
+        "options": {}
+      },
+      "id": "5bff4256-4984-4193-b4c1-ac28aee7bb6f",
+      "name": "End Session",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1840,
+        760
+      ]
+    },
+    {
+      "parameters": {
+        "url": "http://192.168.1.160:5678/webhook-test/2962f4af-b637-4696-bfe5-3c13956b5814",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "tell ma a joke in hindi"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "0832cfca-26fd-471d-8065-1e4d7f66bfc0",
+      "name": "CallChatGPTAPI",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        2780,
+        780
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=http://localhost:5678/webhook/f3c5beda-d033-4d04-83be-482ccd4b87a8?text={{ $('GetParameters').item.json.Message.replace(\"photo@msb\",\"\").trim() }}",
+        "options": {
+          "timeout": 20000
+        }
+      },
+      "id": "be4b7270-2bc9-4339-aece-a1e5f152f24f",
+      "name": "GetImageFromYandex",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        2280,
+        1160
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://whtsapi.mikrowsoft.com/client/sendMessage/{{ $('GetParameters').item.json.SessionId }}",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "={{ $('Webhook').item.json.body.data.data.message.from }}"
+            },
+            {
+              "name": "contentType",
+              "value": "MessageMediaFromURL"
+            },
+            {
+              "name": "content",
+              "value": "=https:{{ $json.image1 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a26838a1-cd49-4e9b-92f1-b1abdeb3fcdc",
+      "name": "SendImage1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        2500,
+        1160
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://whtsapi.mikrowsoft.com/client/sendMessage/{{ $('GetParameters').item.json.SessionId }}",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "={{ $('Webhook').item.json.body.data.data.message.from }}"
+            },
+            {
+              "name": "contentType",
+              "value": "MessageMediaFromURL"
+            },
+            {
+              "name": "content",
+              "value": "=https:{{ $json.image2 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "32850f15-5fde-4aef-ab18-fb5d7f3fdf4c",
+      "name": "SendImage2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        2500,
+        1320
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://whtsapi.mikrowsoft.com/client/sendMessage/{{ $('GetParameters').item.json.SessionId }}",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "={{ $('Webhook').item.json.body.data.data.message.from }}"
+            },
+            {
+              "name": "contentType",
+              "value": "MessageMediaFromURL"
+            },
+            {
+              "name": "content",
+              "value": "=https:{{ $json.image3 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1d629d03-b0ae-4256-a3a1-3cbae07c1a95",
+      "name": "SendImage3",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        2500,
+        1480
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://whtsapi.mikrowsoft.com/client/sendMessage/{{ $('GetParameters').item.json.SessionId }}",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "={{ $('Webhook').item.json.body.data.data.message.from }}"
+            },
+            {
+              "name": "contentType",
+              "value": "MessageMediaFromURL"
+            },
+            {
+              "name": "content",
+              "value": "=https:{{ $json.image4 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4c789db5-6e58-4513-bd60-f2da9ac7302b",
+      "name": "SendImage4",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        2500,
+        1620
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $('GetParameters').item.json.Message }}",
+              "operation": "startsWith",
+              "value2": "art@msb"
+            }
+          ]
+        }
+      },
+      "id": "17ae4168-4996-485d-835c-83fb43674b38",
+      "name": "IF2",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        2020,
+        1440
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=http://localhost:5678/webhook/4b91f894-f11b-4ff4-893e-bac5459c93d6?text= {{ $json.Message.replace(\"art@msb\",\"\").trim() }}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "9abdab51-cc34-4ffb-bdcb-48454fac253c",
+      "name": "HTTP Request1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        2220,
+        1460
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://whtsapi.mikrowsoft.com/client/sendMessage/{{ $('GetParameters').item.json.SessionId }}",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "={{ $('Webhook').item.json.body.data.data.message.from }}"
+            },
+            {
+              "name": "contentType",
+              "value": "MessageMediaFromURL"
+            },
+            {
+              "name": "content",
+              "value": "={{ $json.Image1 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6a9d03bf-8beb-4e51-9d00-aa46c163af16",
+      "name": "SendImage",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        2760,
+        1160
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://whtsapi.mikrowsoft.com/client/sendMessage/{{ $('GetParameters').item.json.SessionId }}",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "={{ $('Webhook').item.json.body.data.data.message.from }}"
+            },
+            {
+              "name": "contentType",
+              "value": "MessageMediaFromURL"
+            },
+            {
+              "name": "content",
+              "value": "={{ $json.Image2 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c4ab2ddf-eb49-4e6d-9c0a-0f17b9b91e56",
+      "name": "SendImage5",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        2760,
+        1300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://whtsapi.mikrowsoft.com/client/sendMessage/{{ $('GetParameters').item.json.SessionId }}",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "={{ $('Webhook').item.json.body.data.data.message.from }}"
+            },
+            {
+              "name": "contentType",
+              "value": "MessageMediaFromURL"
+            },
+            {
+              "name": "content",
+              "value": "={{ $json.Image3 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "705d2357-fd71-4bc8-b653-6e590c552b1a",
+      "name": "SendImage6",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        2760,
+        1440
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://whtsapi.mikrowsoft.com/client/sendMessage/{{ $('GetParameters').item.json.SessionId }}",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "={{ $('Webhook').item.json.body.data.message.from }}"
+            },
+            {
+              "name": "contentType",
+              "value": "MessageMediaFromURL"
+            },
+            {
+              "name": "content",
+              "value": "={{ $json.Image4 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ee119204-63b3-4bdb-afed-7808b0dfba98",
+      "name": "SendImage7",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        2760,
+        1600
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "6b30b21f-49bb-48e1-8e8d-642b786c8a49",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "de0d754c-f72e-4745-a1c3-b477659d3864",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        1220,
+        940
+      ],
+      "webhookId": "6b30b21f-49bb-48e1-8e8d-642b786c8a49"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $('Webhook').item.json.body.data.data.message._data.id.fromMe }}",
+              "operation": "notEqual",
+              "value2": "true"
+            }
+          ]
+        }
+      },
+      "id": "d3378b1d-d578-45cf-92d8-1c222d877255",
+      "name": "IF3",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1820,
+        1160
+      ]
+    },
+    {
+      "parameters": {
+        "dataType": "string",
+        "value1": "={{ $json.Message }}",
+        "rules": {
+          "rules": [
+            {
+              "operation": "startsWith",
+              "value2": "photo@msb"
+            },
+            {
+              "operation": "startsWith",
+              "value2": "art@msb",
+              "output": 1
+            },
+            {
+              "operation": "startsWith",
+              "value2": "chat@msb",
+              "output": 2
+            },
+            {
+              "operation": "startsWith",
+              "value2": "gen@msb",
+              "output": 3
+            }
+          ]
+        }
+      },
+      "id": "bc1fc99e-b100-4265-b9cc-f7e5c9bad9bc",
+      "name": "Switch",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 1,
+      "position": [
+        1540,
+        1680
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $('GetParameters').item.json.Message }}",
+              "operation": "startsWith",
+              "value2": "chat@msb"
+            }
+          ]
+        }
+      },
+      "id": "40fc1496-d55a-4658-b139-14f94171e218",
+      "name": "IF4",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1840,
+        1660
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "json",
+        "url": "https://chataigpt.org/",
+        "elements": {
+          "elements": [
+            {
+              "selector": ".wpaicg-chat-message"
+            }
+          ]
+        },
+        "browserOptions": {},
+        "addition": {
+          "addScriptTag": {
+            "script": [
+              {
+                "content": "=\n    const chatboxTextarea = document.querySelector('.wpaicg-chat-shortcode-typing');\n\n  \n    if (chatboxTextarea) {\n    \n      chatboxTextarea.value = '{{ $('GetParameters').item.json.Message.replace(\"art@msb\",\"\").trim() }}';\n\n    } \n\n const button = document.querySelector('.wpaicg-chat-shortcode-send');\n\nif (button) {\n \n  button.click();\n} \n\n\n\n"
+              }
+            ]
+          },
+          "waitFor": "20000"
+        }
+      },
+      "id": "7bf94f3b-397e-41ad-aa7c-769c5541e43a",
+      "name": "Browserless1",
+      "type": "n8n-nodes-browserless.Browserless",
+      "typeVersion": 1,
+      "position": [
+        2900,
+        1880
+      ],
+      "credentials": {
+        "browserlessApi": {
+          "id": "r4J6v0mNz6ON7tWi",
+          "name": "Browserless Credentials account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://whtsapi.mikrowsoft.com/client/sendMessage/{{ $('GetParameters').item.json.SessionId }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"chatId\": \"{{ $('Webhook').item.json.body.data.data.message._data.from }}\",\n  \"contentType\": \"string\",\n  \"content\": \"{{ $json.Answer.replaceAll('\"','').replaceAll('\"','').replace(/[\\r\\n]/gm,/\\n/).replace(/[/\\n]/gm,'').trim()}}\"\n}  ",
+        "options": {}
+      },
+      "id": "1d9f0727-2596-43f7-ba0f-f3f4ad025a09",
+      "name": "SendImage8",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        2360,
+        1740
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://whtsapi.mikrowsoft.com/chat/sendStateTyping/{{ $('GetParameters').item.json.SessionId.trim() }}",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "={{ $('IF1').item.json.body.data.data.message._data.from }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8a769b29-aa6b-4c28-ad23-750119f15991",
+      "name": "SendImage9",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1160,
+        1680
+      ],
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "maxTries": 2,
+      "executeOnce": false,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $('GetParameters').item.json.Message }}",
+              "operation": "startsWith",
+              "value2": "gen@msb"
+            }
+          ]
+        }
+      },
+      "id": "edc4ef3c-1cb3-4bdd-b51e-8e2f1d25507f",
+      "name": "IF5",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1820,
+        1880
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=http://localhost:5678/webhook-test/73d768ea-eab0-4dbf-9ae7-b46051348f57?text= {{ $json.Message.replace(\"video@msb\",\"\").trim() }}",
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "be4dbd6c-415a-4fba-be68-83edfda08abe",
+      "name": "HTTP Request2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        2360,
+        2100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://whtsapi.mikrowsoft.com/client/sendMessage/{{ $('GetParameters').item.json.SessionId }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={   \"chatId\": \"{{ $('Webhook').item.json.body.data.data.message.from }}\",   \n\"contentType\": \"MessageMedia\",   \n\"content\": {     \n      \"mimetype\": \"{{ $json.Image1Data.split(':')[1].split(';')[0] }}\",     \n\"data\": \"{{ $json.Image1Data.split(',')[1] }}\",     \n\"filename\": \"image1.jpg\"   \n        } \n}  ",
+        "options": {}
+      },
+      "id": "18165dd3-dd8f-4d6c-93b1-790ad150b18d",
+      "name": "SendImage10",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        2380,
+        1920
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=http://localhost:5678/webhook/2962f4af-b637-4696-bfe5-3c13956b5814?text= {{ $json.Message.replace(\"chat@msb\",\"\").trim() }}",
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "id": "d7d47e59-0029-4973-87ab-31941d909ec0",
+      "name": "HTTP Request3",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        2100,
+        1700
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 5,
+        "unit": "seconds"
+      },
+      "id": "147c6d20-33d6-465a-9aca-1450c4a4b249",
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        1660,
+        1280
+      ],
+      "webhookId": "7b57fcec-2975-4261-bf0d-48d24e1317a1"
+    },
+    {
+      "parameters": {
+        "url": "=http://localhost:5678/webhook/b77b7bfc-26ec-4f95-a91b-48fdf10c238d?text= {{ $json.Message.replace(\"gen@msb\",\"\").trim() }}",
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "id": "3339e61d-6774-4a66-aba7-f860b63e5a1f",
+      "name": "HTTP Request4",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        2080,
+        1900
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://whtsapi.mikrowsoft.com/client/sendMessage/{{ $('GetParameters').item.json.SessionId }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={   \"chatId\": \"{{ $('Webhook').item.json.body.data.data.message.from }}\",   \n\"contentType\": \"MessageMedia\",   \n\"content\": {     \n      \"mimetype\": \"{{ $('HTTP Request4').item.json.Image2Data.split(':')[1].split(';')[0] }}\",     \n\"data\": \"{{ $('HTTP Request4').item.json.Image2Data.split(',')[1] }}\",     \n\"filename\": \"image2.jpg\"   \n        } \n}    ",
+        "options": {}
+      },
+      "id": "3228140e-8bbf-406c-b1cf-9c60d8bd877b",
+      "name": "SendImage11",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        2580,
+        1920
+      ]
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2023-10-30T22:49:32.000Z",
+  "versionId": "1c1a11ad-86ec-4840-aec2-4527e3fbf5d6"
+}
