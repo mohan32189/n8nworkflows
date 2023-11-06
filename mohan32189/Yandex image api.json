@@ -1,0 +1,224 @@
+{
+  "active": false,
+  "connections": {
+    "Set": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Set",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Browserless": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "createdAt": "2023-09-11T18:36:35.319Z",
+  "id": "bBd4M0PAGfXLtSXW",
+  "name": "Yandex image api",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://yandex.com/images/search",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "={{ $json.query.text }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 3000
+        }
+      },
+      "id": "60d64e1f-9aff-43ab-8153-959a3c1ee3e5",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        720,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "image1",
+              "value": "={{ $json.imgSrcArray[3] }}"
+            },
+            {
+              "name": "image2",
+              "value": "={{ $json.imgSrcArray[5] }}"
+            },
+            {
+              "name": "image3",
+              "value": "={{ $json.imgSrcArray[8] }}"
+            },
+            {
+              "name": "image4",
+              "value": "={{ $json.imgSrcArray[10] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b00a9859-57fb-4b09-a7ed-94562698bc29",
+      "name": "Set",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconst htmlString = items[0].json.data;\n\n// Extract img src attributes\nfunction extractImgSrc(htmlString) {\n    const regexPattern = /<img[^>]*src=\"([^\"]*)\"/g;\n    const matches = [];\n    let match;\n\n    while ((match = regexPattern.exec(htmlString)) !== null) {\n        matches.push(match[1]);\n    }\n\n    return matches;\n}\n\n// Extract img src attributes from the input HTML string\nconst imgSrcArray = extractImgSrc(htmlString);\n\n// Output data\nreturn [{ json: { imgSrcArray } }];"
+      },
+      "id": "3f46cddc-dbfe-409c-bc70-8e3345bb54a1",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1400,
+        640
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Input data\nconst inputString = items[0].json.data;\n\n// Extract URLs ending with .jpeg\nfunction extractUrlsEndingWithJPEG(inputString) {\n    const regexPattern = /\\/\\/[^\\s\"]+\\.jpeg/g;\n    const matches = inputString.match(regexPattern) || [];\n    return matches;\n}\n\n// Extract URLs ending with .jpeg from the input string\nconst imgSrcArray = extractUrlsEndingWithJPEG(inputString);\n\n// Output data\nreturn [{ json: { imgSrcArray } }];"
+      },
+      "id": "926d99b8-39df-4cf9-88cd-be6c428eaa8e",
+      "name": "Code1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        940,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract strings between two specified strings\nfunction extractStringsBetween(inputString, startString, endString) {\n    const regexPattern = new RegExp(`${startString}(.*?)${endString}`, 'g');\n    const matches = inputString.match(regexPattern);\n    \n    if (!matches) return [];\n    \n    return matches.map(match => match.slice(startString.length, -endString.length));\n}\n\n// Input data\nconst inputString = items[0].json.data; // Access input data directly\n\nconst startString = '//';\nconst endString = '.jpg';\n\n// Extract array of strings between startString and endString\nconst extractedStrings = extractStringsBetween(inputString, startString, endString);\n\n// Output data\nreturn { extractedStrings };"
+      },
+      "id": "5894f1dd-4e90-430c-97b4-2da133d855b8",
+      "name": "Code2",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1080,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "c05141b4-fce9-4123-884f-b72c21f2319d",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1320,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "screenshot",
+        "operation": "capture",
+        "url": "https://yandex.com/images/search?text=hulk",
+        "manipulate": {},
+        "imageOptions": {
+          "fullPage": true
+        },
+        "browserOptions": {},
+        "addition": {
+          "waitFor": "3000"
+        }
+      },
+      "id": "8cf56bef-1936-4627-bccf-8f5a481d2faf",
+      "name": "Browserless",
+      "type": "n8n-nodes-browserless.Browserless",
+      "typeVersion": 1,
+      "position": [
+        260,
+        520
+      ],
+      "credentials": {
+        "browserlessApi": {
+          "id": "5PLOgVV37wlyH5RS",
+          "name": "Browserless Credentials account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "f3c5beda-d033-4d04-83be-482ccd4b87a8",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "29022dc9-c47f-4ad4-924c-a415fc19bd95",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        520,
+        280
+      ],
+      "webhookId": "f3c5beda-d033-4d04-83be-482ccd4b87a8"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2023-10-23T18:10:24.000Z",
+  "versionId": "e76ae37a-ebb5-4519-b7ca-a480d2bf171c"
+}
