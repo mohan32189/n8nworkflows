@@ -1,0 +1,100 @@
+{
+  "active": false,
+  "connections": {
+    "Browserless": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Browserless",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2023-09-11T18:40:38.581Z",
+  "id": "UU4x44dFa0VYmMEG",
+  "name": "HTML to PNG",
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "pdf",
+        "url": "https://www.google.com",
+        "imageOptions": {
+          "fullPage": true
+        },
+        "browserOptions": {},
+        "addition": {
+          "addScriptTag": {
+            "script": [
+              {
+                "content": "=// HTML string to render\nconst htmlString = '{{ $json.query.htmlData }}';\n\n// Get a reference to the body element\nconst body = document.body;\n\n// Clear the existing HTML content\nbody.innerHTML = '';\n\n// Create a new div element\nconst div = document.createElement('div');\n\n// Set the inner HTML of the div to your HTML string\ndiv.innerHTML = htmlString;\n\n// Append the div to the body\nbody.appendChild(div); "
+              }
+            ]
+          },
+          "waitFor": "1000"
+        }
+      },
+      "id": "5cf85f5c-914b-4921-9246-54977119b154",
+      "name": "Browserless",
+      "type": "n8n-nodes-browserless.Browserless",
+      "typeVersion": 1,
+      "position": [
+        620,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "basicAuth",
+        "httpMethod": "POST",
+        "path": "c1bf53e5-35fb-43ca-88ed-fbda63d84222",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "a584b078-3b41-44aa-b646-2ffacc75292d",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        420,
+        300
+      ],
+      "webhookId": "c1bf53e5-35fb-43ca-88ed-fbda63d84222"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "b41572a8-473c-44e8-a2f5-86640782eb72",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        840,
+        300
+      ]
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2023-09-11T18:40:40.000Z",
+  "versionId": "c4c2b752-ed23-4cbf-b587-45fc76147369"
+}
